@@ -40,6 +40,6 @@ do
     do
         docker run -e TOKEN $docker_image -c "/usr/bin/time --format "%e" --output=/test/time.out \
                                              /test/bootstrap-${snek}.sh &> /dev/null && \
-                                             echo -n "${snek}," ; cat /test/time.out" >> $project_logs_dir/results.txt
+                                             echo -n "${snek}," && cat /test/time.out" >> $project_logs_dir/results.txt
     done
 done   
