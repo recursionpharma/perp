@@ -1,2 +1,3 @@
-# python_env_resolver_benchmark
-A Repository for housing a Python resolver benchmark
+# Python Environment Resolver Benchmark
+
+A Repository for housing a Python environment resolver benchmark.
