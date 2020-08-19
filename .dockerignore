@@ -1,0 +1,3 @@
+run-suite.sh
+plot-results.py
+**/logs
