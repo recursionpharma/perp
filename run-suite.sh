@@ -30,16 +30,15 @@ fi
 
 
 docker build . --build-arg PROJECT_DIR=$project_dir --tag $docker_image &> logs/docker.log
-# TOKEN=$(anaconda auth --create --name PROFILE_TEST)
-for snek in conda mamba pip pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock pyenv
+for snek in conda conda+pip mamba mamba+pip pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
 do
     echo $snek
-    docker run -e TOKEN $docker_image -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
+    docker run $docker_image -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
     echo "return code: $?" >> $project_logs_dir/${snek}.log
     for i in `seq 1 10`;
     do
-        docker run -e TOKEN $docker_image -c "/usr/bin/time --format "%e" --output=/test/time.out \
-                                             /test/bootstrap-${snek}.sh &> /dev/null && \
-                                             echo -n "${snek}," && cat /test/time.out" >> $project_logs_dir/results.txt
+        docker run $docker_image -c "/usr/bin/time --format "%e" --output=/test/time.out \
+                                    /test/bootstrap-${snek}.sh &> /dev/null && \
+                                    echo -n "${snek}," && cat /test/time.out" >> $project_logs_dir/results.txt
     done
 done   

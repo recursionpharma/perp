@@ -1,5 +1,4 @@
 FROM ubuntu:latest
-ARG TOKEN
 ARG PROJECT_DIR
 
 # Get the latest
