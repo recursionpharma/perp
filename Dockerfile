@@ -18,6 +18,7 @@ RUN pip3 install --user pipenv
 
 # Install conda
 RUN curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o ~/miniconda.sh && bash ~/miniconda.sh -b -p $HOME/miniconda
+ENV PATH /root/miniconda/bin:$PATH
 
 # Install mamba
 RUN ~/miniconda/bin/conda install mamba -c conda-forge
