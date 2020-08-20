@@ -23,7 +23,7 @@ then
     mkdir $project_lock_dir
 fi
 
-if docker image inspect $docker_image &> /dev/null; then
+if [ ! -z $(docker image inspect $docker_image &> /dev/null) ]; then
     docker build . --build-arg PROJECT_DIR=$project_dir --tag $docker_image &> logs/docker.log
 fi
 docker run $docker_image -c "/test/bootstrap-conda.sh &> /dev/null && conda activate test &> /dev/null && conda env export" > $project_lock_dir/environment-lock.yml
