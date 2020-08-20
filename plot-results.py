@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 
 def plot(project, results_file, image_file):
     df = pd.read_csv(results_file)
-    df['time'] = pd.to_timedelta(df['time']).astype('timedelta64[s]')
     sns_plot = sns.barplot(x='env', y='time', data=df)
     ax = plt.gca()
     ax.set_ylabel('Time (s)')
