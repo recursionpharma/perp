@@ -1,3 +1,7 @@
-# Python Environment Resolver Benchmark
+# Python Environment Resolver Profiler
 
-A Repository for housing a Python environment resolver benchmark.
+A Repository for housing scripts to generate your own Python environment resolver benchmark.
+
+# Example
+
+TODO
