@@ -30,7 +30,7 @@ fi
 
 
 docker build . --build-arg PROJECT_DIR=$project_dir --tag $docker_image &> logs/docker.log
-for snek in conda conda+pip mamba mamba+pip pip-compile pip-lock pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
+for snek in conda conda-lock conda+pip mamba mamba+pip pip-compile pip-lock pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
 do
     echo $snek
     docker run $docker_image -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
