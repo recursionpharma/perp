@@ -1,8 +1,11 @@
 FROM ubuntu:latest
 ARG PROJECT_DIR
+ENV PY_VERSION 3.8-dev
+ENV CFLAGS -O2
 
-# Get the latest
-RUN apt update && apt install -y python3-pip python3-venv curl git time && rm -rf /var/lib/apt/lists/*
+# Get requirements for installing different versions of python via pyenv
+RUN apt update && apt install -y python3-pip python3-venv curl git time libssl-dev libbz2-dev \
+    libreadline-dev && rm -rf /var/lib/apt/lists/*
 
 # Update pip
 RUN pip3 install --upgrade pip
@@ -22,6 +25,9 @@ ENV PATH /root/miniconda/bin:$PATH
 
 # Install mamba
 RUN ~/miniconda/bin/conda install mamba -c conda-forge
+
+# Install some different versions of Python
+RUN /root/.pyenv/bin/pyenv install 3.6-dev && /root/.pyenv/bin/pyenv install 3.7-dev && /root/.pyenv/bin/pyenv install 3.8-dev && /root/.pyenv/bin/pyenv install 3.9-dev
 
 COPY ./utils/ ./bootstrap/ ./$PROJECT_DIR/ /test/
 RUN /test/cleanup.sh
