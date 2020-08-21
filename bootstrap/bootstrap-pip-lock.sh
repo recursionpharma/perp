@@ -1,7 +1,5 @@
 #! /bin/bash
 
-PY_VERSION=3.8.5
-
 mv lockfiles/* ./
 
 /root/.pyenv/bin/pyenv virtualenv $PY_VERSION test
