@@ -1,20 +1,28 @@
 FROM ubuntu:latest
 ARG PROJECT_DIR
-ENV PY_VERSION 3.8-dev
+ENV PY_VERSION 3.6.11
 ENV CFLAGS -O2
 
 # Get requirements for installing different versions of python via pyenv
-RUN apt update && apt install -y python3-pip python3-venv curl git time libssl-dev libbz2-dev \
-    libreadline-dev && rm -rf /var/lib/apt/lists/*
+RUN apt update \
+    && apt install -y python3-pip python3-venv curl git time libssl-dev \
+    libbz2-dev libsqlite3-dev libreadline-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pyenv
+RUN curl https://pyenv.run | bash
+
+# Install some different versions of Python
+RUN /root/.pyenv/bin/pyenv install 3.6.11 \
+    && /root/.pyenv/bin/pyenv install 3.7.8 \
+    && /root/.pyenv/bin/pyenv install 3.8.5 \
+    && /root/.pyenv/bin/pyenv install 3.9-dev
 
 # Update pip
 RUN pip3 install --upgrade pip
 
 # Install poetry
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
-
-# Install pyenv
-RUN curl https://pyenv.run | bash
 
 # Install pipenv
 RUN pip3 install --user pipenv
@@ -25,9 +33,6 @@ ENV PATH /root/miniconda/bin:$PATH
 
 # Install mamba
 RUN ~/miniconda/bin/conda install mamba -c conda-forge
-
-# Install some different versions of Python
-RUN /root/.pyenv/bin/pyenv install 3.6-dev && /root/.pyenv/bin/pyenv install 3.7-dev && /root/.pyenv/bin/pyenv install 3.8-dev && /root/.pyenv/bin/pyenv install 3.9-dev
 
 COPY ./utils/ ./bootstrap/ ./$PROJECT_DIR/ /test/
 RUN /test/cleanup.sh
