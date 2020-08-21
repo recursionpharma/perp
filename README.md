@@ -24,14 +24,14 @@ following optional formats:
   `run-suite.sh`
 
 We have leveraged [DepHell](https://github.com/dephell/dephell) largely to
-do the majority of the conversions and then executed `poetry`, `pip-compile`,
-and `pyenv` locally to generate the requisite lockfiles for each of their
-respective resolvers. (This step can probably be automated away from the user).
+do the majority of the conversions. There is a convenience script
+(`generate-inputs.sh`) that will generate pipenv and poetry inputs if you
+provide it a `requirements.in` file for your benchmark. Unfortunately, at the
+time of this writing `environment.yml` support from DepHell was not working.
 
-There is a convenience script (`generate-inputs.sh`) that will generate pipenv
-and poetry inputs if you provide it a `requirements.in` file for your benchmark.
-Unfortunately, at the time of this writing `environment.yml` support from
-DepHell was not working.
+### Python Versions
+
+Use one of the following for now: `[3.6.11, 3.7.8, 3.8.5]`
 
 ## Example
 
