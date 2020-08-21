@@ -44,7 +44,7 @@ do
     docker run -e PY_VERSION=$py_version $docker_image -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
     status_code=$?
     echo "return code: $status_code" >> $project_logs_dir/${snek}.log
-    if [[ $status_code -eq 0]]; then
+    if [[ $status_code -eq 0 ]]; then
         for i in `seq 1 10`;
         do
             docker run -e PY_VERSION=$py_version $docker_image -c "/usr/bin/time --format "%e" --output=/test/time.out \
