@@ -6,7 +6,7 @@ ENV CFLAGS -O2
 # Get requirements for installing different versions of python via pyenv
 RUN apt update \
     && apt install -y python3-pip python3-venv curl git time libssl-dev \
-    libbz2-dev libsqlite3-dev libreadline-dev \
+    libbz2-dev libsqlite3-dev libreadline-dev libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pyenv
