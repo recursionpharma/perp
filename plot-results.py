@@ -5,10 +5,11 @@ import matplotlib.pyplot as plt
 
 def plot(project, results_file, image_file):
     df = pd.read_csv(results_file)
-    sns_plot = sns.barplot(x='env', y='time', data=df)
+    sns_plot = sns.barplot(x='env', y='time', data=df, order=df.sort_values('time').env)
     ax = plt.gca()
     ax.set_ylabel('Time (s)')
     plt.gca().set_xlabel('Environment Resolver')
+    _ = plt.xticks(rotation=15)
     ax.set_title(f'{project.capitalize()} Environment Resolution Time')
     plt.show()
     sns_plot.figure.savefig(image_file)
