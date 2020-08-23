@@ -24,7 +24,7 @@ colors = {
     'conda+pip': '#99ad8d',
     'mamba': '#3c6524',
     'mamba-lock': '#4e822f',
-    'mamba+pip': '#405534',
+    'mamba+pip': '#434b3e',
     'pip-compile': '#8b3520',
     'pip-lock': '#d77058',
     'pip+pyenv': '#f19702',
