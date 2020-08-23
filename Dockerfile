@@ -1,6 +1,7 @@
 FROM ubuntu:latest
 ARG PROJECT_DIR
-ENV PY_VERSION 3.6.11
+ARG PYTHON_VERSION
+ENV PY_VERSION=$PYTHON_VERSION
 ENV CFLAGS -O2
 
 # Get requirements for installing different versions of python via pyenv
@@ -12,11 +13,9 @@ RUN apt update \
 # Install pyenv
 RUN curl https://pyenv.run | bash
 
-# Install some different versions of Python
-RUN /root/.pyenv/bin/pyenv install 3.6.11 \
-    && /root/.pyenv/bin/pyenv install 3.7.8 \
-    && /root/.pyenv/bin/pyenv install 3.8.5 \
-    && /root/.pyenv/bin/pyenv install 3.9-dev
+# Install the specific python version requested using pyenv (multiple builds
+# will use this version)
+RUN /root/.pyenv/bin/pyenv install $PYTHON_VERSION
 
 # Update pip
 RUN pip3 install --upgrade pip
