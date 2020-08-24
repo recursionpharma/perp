@@ -29,10 +29,6 @@ do the majority of the conversions. There is a convenience script
 provide it a `requirements.in` file for your benchmark. Unfortunately, at the
 time of this writing `environment.yml` support from DepHell was not working.
 
-### Python Versions
-
-Use one of the following for now: `[3.6.11, 3.7.8, 3.8.5]`
-
 ## Example
 
 TODO
