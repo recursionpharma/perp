@@ -11,17 +11,18 @@ following optional formats:
 - `environment-conda.yml` - For conda and mamba resolvers. This version should
   use only conda channels and/or meta-channels.
 - `environment-pip.yml` - Similar to above, but should use PyPI versions of all
-  dependencies.
-- `environment-lock.yml` - Will be generated automatically when you call
-  `run-suite.sh`
+  dependencies.  
 - `Pipfile` - Used by pyenv.
-- `Pipfile.lock` - Will be generated automatically when you call `run-suite.sh`
 - `pyproject.toml` - Used by poetry.
-- `poetry.lock` - Will be generated automatically when you call `run-suite.sh`
 - `requirements.in` - This is the unpinned requirements file used by pip's
   resolver.
-- `requirements.txt` - Will be generated automatically when you call
-  `run-suite.sh`
+ 
+The following lock files will be automatically generated for the respective toolchains and placed into a `lockfiles` directory beside the files listed above:
+ 
+- `poetry.lock`
+- `environment-lock.yml`
+- `Pipfile.lock`
+- `requirements.txt`
 
 We have leveraged [DepHell](https://github.com/dephell/dephell) largely to
 do the majority of the conversions. There is a convenience script
