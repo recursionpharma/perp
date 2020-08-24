@@ -1,8 +1,11 @@
 #! /bin/bash
 
-PY_VERSION=3.8.5
+export PATH="/root/.local/bin:/root/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
-/root/.pyenv/bin/pyenv virtualenv $PY_VERSION test
-/root/.pyenv/bin/pyenv deactivate
-/root/.pyenv/bin/pyenv activate test
+pyenv virtualenv $PY_VERSION test
+pyenv deactivate
+pyenv activate test
+pip install pip --upgrade
 pip install --no-cache-dir --use-feature=2020-resolver -r requirements.in
