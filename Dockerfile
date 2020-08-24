@@ -1,17 +1,27 @@
 FROM ubuntu:latest
 ARG PROJECT_DIR
+ARG PYTHON_VERSION
+ENV PY_VERSION=$PYTHON_VERSION
+ENV CFLAGS -O2
 
-# Get the latest
-RUN apt update && apt install -y python3-pip python3-venv curl git time && rm -rf /var/lib/apt/lists/*
+# Get requirements for installing different versions of python via pyenv
+RUN apt update \
+    && apt install -y python3-pip python3-venv curl git time libssl-dev \
+    libbz2-dev libsqlite3-dev libreadline-dev libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pyenv
+RUN curl https://pyenv.run | bash
+
+# Install the specific python version requested using pyenv (multiple builds
+# will use this version)
+RUN /root/.pyenv/bin/pyenv install $PYTHON_VERSION
 
 # Update pip
 RUN pip3 install --upgrade pip
 
 # Install poetry
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
-
-# Install pyenv
-RUN curl https://pyenv.run | bash
 
 # Install pipenv
 RUN pip3 install --user pipenv
