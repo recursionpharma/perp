@@ -49,13 +49,13 @@ echo "return code: $?" >> $project_logs_dir/create-lock-pip.log
 for snek in conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
 do
     echo $snek
-    docker run --rm $docker_image -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
+    docker run --rm --mount type=bind,source="$(pwd)"/$project_dir/lockfiles,target=/test/lockfiles,readonly $docker_image -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
     status_code=$?
     echo "return code: $status_code" >> $project_logs_dir/${snek}.log
     if [[ $status_code -eq 0 ]]; then
         for i in `seq 1 10`;
         do
-            docker run --rm $docker_image -c "/usr/bin/time --format "%e" --output=/test/time.out \
+            docker run --rm --mount type=bind,source="$(pwd)"/$project_dir/lockfiles,target=/test/lockfiles,readonly $docker_image -c "/usr/bin/time --format "%e" --output=/test/time.out \
                                         /test/bootstrap-${snek}.sh &> /dev/null && \
                                         echo -n "${snek}," && cat /test/time.out" >> $project_logs_dir/results.txt
         done
