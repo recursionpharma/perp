@@ -9,7 +9,7 @@ You will need to provide your own one-to-one installation files for each of the
 following optional formats:
 
 - `environment-conda.yml` - For conda and mamba resolvers. This version should
-  use only conda channels and/or meta-channels.
+  use only conda channels and/or meta-channels where possible.
 - `environment-pip.yml` - Similar to above, but should use PyPI versions of all
   dependencies.  
 - `Pipfile` - Used by pyenv.
