@@ -1,6 +1,6 @@
 #! /bin/bash
 
-mv lockfiles/* ./
+cp lockfiles/* ./
 
 export LC_ALL='en_US.UTF-8'
 export LANG='en_US.UTF-8'

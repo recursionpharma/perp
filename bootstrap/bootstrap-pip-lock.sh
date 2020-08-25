@@ -1,6 +1,6 @@
 #! /bin/bash
 
-mv lockfiles/* ./
+cp lockfiles/* ./
 
 export PATH="/root/.local/bin:/root/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
