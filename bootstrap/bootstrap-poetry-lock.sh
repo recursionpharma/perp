@@ -9,5 +9,5 @@ eval "$(pyenv virtualenv-init -)"
 
 pyenv init
 pyenv shell $PY_VERSION
-
+poetry run pip install --upgrade pip
 poetry install --no-root

@@ -27,6 +27,7 @@ colors = {
     'mamba+pip': '#434b3e',
     'pip-compile': '#8b3520',
     'pip-lock': '#d77058',
+    'pip-wheel-lock': '#ebb7ab',
     'pip+pyenv': '#f19702',
     'pip+venv': '#f1d302',
     'pipenv': '#9370db',
