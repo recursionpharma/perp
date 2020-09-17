@@ -30,6 +30,11 @@ then
     echo "env,time" > $project_logs_dir/results.txt
 fi
 
+if [[ ! -d $project_lock_dir ]];
+then
+    mkdir $project_lock_dir
+fi
+
 
 docker build . --build-arg PROJECT_DIR=$project_dir --build-arg PYTHON_VERSION=$py_version --tag $docker_image &> logs/docker.log
 
