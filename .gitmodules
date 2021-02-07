@@ -1,3 +1,6 @@
 [submodule "projects"]
 	path = projects
 	url = https://github.com/recursionpharma/perp_benchmarks
+[submodule "public"]
+	path = public
+	url = https://github.com/recursionpharma/perp_public_benchmarks.git
