@@ -11,14 +11,14 @@ following optional formats:
 - `environment-conda.yml` - For conda and mamba resolvers. This version should
   use only conda channels and/or meta-channels where possible.
 - `environment-pip.yml` - Similar to above, but should use PyPI versions of all
-  dependencies.  
+  dependencies.
 - `Pipfile` - Used by pyenv.
 - `pyproject.toml` - Used by poetry.
 - `requirements.in` - This is the unpinned requirements file used by pip's
   resolver.
- 
+
 The following lock files will be automatically generated for the respective toolchains and placed into a `lockfiles` directory beside the files listed above:
- 
+
 - `poetry.lock`
 - `environment-lock.yml`
 - `Pipfile.lock`
@@ -32,4 +32,11 @@ time of this writing `environment.yml` support from DepHell was not working.
 
 ## Example
 
-TODO
+```
+git submodule init
+git submodule update
+```
+
+```
+./run-suite.sh utility 3.9.1
+```
