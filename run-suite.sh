@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-# set -e
+set -e
 set -x
 
 if [[ $# < 2 ]];
@@ -8,9 +8,13 @@ then
     exit -1
 fi
 
+BASEDIR=$(dirname "$0")
+submodule=public
+
 project=$1
 py_version=$2
-project_dir=projects/$project
+
+project_dir=$submodule/$project
 project_logs_dir=$project_dir/logs
 project_lock_dir=$project_dir/lockfiles
 docker_image=profile-$project
@@ -36,7 +40,7 @@ then
 fi
 
 
-docker build . --build-arg PROJECT_DIR=$project_dir --build-arg PYTHON_VERSION=$py_version --tag $docker_image &> logs/docker.log
+docker build $BASEDIR --build-arg PROJECT_DIR=$project_dir --build-arg PYTHON_VERSION=$py_version --tag $docker_image &> logs/docker.log
 
 # Create the lockfiles for the requisite projects and log the output for debugging
 docker run --rm -e PY_VERSION=$py_version $docker_image -c "/test/bootstrap-conda.sh 1>&2 && ~/miniconda/bin/conda env export -n test " > $project_lock_dir/environment-lock.yml 2> $project_logs_dir/create-lock-conda.log
