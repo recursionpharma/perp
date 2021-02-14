@@ -4,15 +4,15 @@ set -x
 
 if [[ $# < 2 ]];
 then
-    echo "Usage: $0 project python-version"
+    echo "Usage: $0 benchmark-dir project python-version"
     exit -1
 fi
 
 BASEDIR=$(dirname "$0")
-submodule=public
 
-project=$1
-py_version=$2
+submodule=$1
+project=$2
+py_version=$3
 
 project_dir=$submodule/$project
 project_logs_dir=$project_dir/logs
