@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -e
+# set -e
 set -x
 
 if [[ $# < 2 ]];
@@ -44,16 +44,36 @@ docker build $BASEDIR --build-arg PROJECT_DIR=$project_dir --build-arg PYTHON_VE
 
 # Create the lockfiles for the requisite projects and log the output for debugging
 docker run --rm -e PY_VERSION=$py_version $docker_image -c "/test/bootstrap-conda.sh 1>&2 && ~/miniconda/bin/conda env export -n test " > $project_lock_dir/environment-lock.yml 2> $project_logs_dir/create-lock-conda.log
-echo "return code: $?" >> $project_logs_dir/create-lock-conda.log
+status_code=$?
+echo "return code: $status_code" >> $project_logs_dir/create-lock-conda.log
+if [[ $status_code -ne 0 ]]; then
+    cat $project_logs_dir/create-lock-conda.log
+    exit $status_code
+fi
 
 docker run --rm -e PY_VERSION=$py_version $docker_image -c "/test/bootstrap-pipenv.sh 1>&2 && cat Pipfile.lock" > $project_lock_dir/Pipfile.lock 2> $project_logs_dir/create-lock-pipenv.log
-echo "return code: $?" >> $project_logs_dir/create-lock-pipenv.log
+status_code=$?
+echo "return code: $status_code" >> $project_logs_dir/create-lock-pipenv.log
+if [[ $status_code -ne 0 ]]; then
+    cat $project_logs_dir/create-lock-pipenv.log
+    exit $status_code
+fi
 
 docker run --rm -e PY_VERSION=$py_version $docker_image -c "/test/bootstrap-poetry.sh 1>&2 && cat poetry.lock" > $project_lock_dir/poetry.lock 2> $project_logs_dir/create-lock-poetry.log
-echo "return code: $?" >> $project_logs_dir/create-lock-poetry.log
+status_code=$?
+echo "return code: $status_code" >> $project_logs_dir/create-lock-poetry.log
+if [[ $status_code -ne 0 ]]; then
+    cat $project_logs_dir/create-lock-poetry.log
+    exit $status_code
+fi
 
 docker run --rm -e PY_VERSION=$py_version $docker_image -c "/test/bootstrap-pip-compile.sh 1>&2 && cat requirements.txt" > $project_lock_dir/requirements.txt 2> $project_logs_dir/create-lock-pip.log
-echo "return code: $?" >> $project_logs_dir/create-lock-pip.log
+status_code=$?
+echo "return code: $status_code" >> $project_logs_dir/create-lock-pip.log
+if [[ $status_code -ne 0 ]]; then
+    cat $project_logs_dir/create-lock-pip.log
+    exit $status_code
+fi
 
 for snek in pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv
 do
@@ -68,5 +88,8 @@ do
                                         /test/bootstrap-${snek}.sh &> /dev/null && \
                                         echo -n "${snek}," && cat /test/time.out" >> $project_logs_dir/results.txt
         done
+    else
+        cat $project_logs_dir/${snek}.log
+        exit $status_code
     fi
 done   
