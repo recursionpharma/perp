@@ -41,6 +41,11 @@ fi
 
 
 docker build $BASEDIR --build-arg PROJECT_DIR=$project_dir --build-arg PYTHON_VERSION=$py_version --tag $docker_image &> logs/docker.log
+status_code=$?
+if [[ $status_code -ne 0 ]]; then
+    cat logs/docker.log
+    exit $status_code
+fi
 
 # Create the lockfiles for the requisite projects and log the output for debugging
 docker run --rm -e PY_VERSION=$py_version $docker_image -c "/test/bootstrap-conda.sh 1>&2 && ~/miniconda/bin/conda env export -n test " > $project_lock_dir/environment-lock.yml 2> $project_logs_dir/create-lock-conda.log
