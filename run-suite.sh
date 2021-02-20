@@ -55,7 +55,7 @@ echo "return code: $?" >> $project_logs_dir/create-lock-poetry.log
 docker run --rm -e PY_VERSION=$py_version $docker_image -c "/test/bootstrap-pip-compile.sh 1>&2 && cat requirements.txt" > $project_lock_dir/requirements.txt 2> $project_logs_dir/create-lock-pip.log
 echo "return code: $?" >> $project_logs_dir/create-lock-pip.log
 
-for snek in conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
+for snek in pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv
 do
     echo $snek
     docker run --rm --mount type=bind,source="$(pwd)"/$project_dir/lockfiles,target=/test/lockfiles,readonly $docker_image -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
