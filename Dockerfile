@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:latest as base
 ARG PROJECT_DIR
 ARG PYTHON_VERSION
 ENV PY_VERSION=$PYTHON_VERSION
@@ -39,3 +39,7 @@ RUN /test/cleanup.sh
 WORKDIR /test
 
 ENTRYPOINT ["/bin/bash"]
+
+FROM base as locks
+
+COPY $PROJECT_DIR/lockfiles /test/lockfiles
