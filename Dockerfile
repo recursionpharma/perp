@@ -42,4 +42,4 @@ ENTRYPOINT ["/bin/bash"]
 
 FROM base as locks
 
-COPY $PROJECT_DIR/lockfiles /test/lockfiles
+COPY ./$PROJECT_DIR/lockfiles /test/lockfiles
