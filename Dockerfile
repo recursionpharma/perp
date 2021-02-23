@@ -41,5 +41,8 @@ WORKDIR /test
 ENTRYPOINT ["/bin/bash"]
 
 FROM base as locks
+ARG PROJECT_DIR
+ARG PYTHON_VERSION
+ENV PY_VERSION=$PYTHON_VERSION
 
 COPY ./$PROJECT_DIR/lockfiles /test/lockfiles

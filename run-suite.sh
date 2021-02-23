@@ -18,6 +18,7 @@ project_dir=$submodule/$project
 project_logs_dir=$project_dir/logs
 project_lock_dir=$project_dir/lockfiles
 docker_image=profile-$project
+docker_image_lock=profile-$project-lock
 
 if [[ ! -d logs ]];
 then
@@ -80,23 +81,23 @@ if [[ $status_code -ne 0 ]]; then
     exit $status_code
 fi
 
-docker build $BASEDIR --build-arg PROJECT_DIR=$project_dir --target locks --build-arg PYTHON_VERSION=$py_version --tag $docker_image &> logs/docker.log
+`docker build $BASEDIR --build-arg PROJECT_DIR=$project_dir --target locks --build-arg PYTHON_VERSION=$py_version --tag $docker_image_lock &> logs/docker-lock.log`
 status_code=$?
 if [[ $status_code -ne 0 ]]; then
-    cat logs/docker.log
+    cat logs/docker-lock.log
     exit $status_code
 fi
 
 for snek in pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv
 do
     echo $snek
-    docker run --rm $docker_image -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
+    docker run --rm $docker_image_lock -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
     status_code=$?
     echo "return code: $status_code" >> $project_logs_dir/${snek}.log
     if [[ $status_code -eq 0 ]]; then
         for i in `seq 1 10`;
         do
-            docker run --rm $docker_image -c "/usr/bin/time --format "%e" --output=/test/time.out \
+            docker run --rm $docker_image_lock -c "/usr/bin/time --format "%e" --output=/test/time.out \
                                         /test/bootstrap-${snek}.sh &> /dev/null && \
                                         echo -n "${snek}," && cat /test/time.out" >> $project_logs_dir/results.txt
         done
