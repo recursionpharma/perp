@@ -88,7 +88,7 @@ if [[ $status_code -ne 0 ]]; then
     exit $status_code
 fi
 
-for snek in pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv
+for snek in conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
 do
     echo $snek
     docker run --rm $docker_image_lock -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
