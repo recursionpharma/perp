@@ -3,6 +3,8 @@
 cp lockfiles/* ./
 
 export PATH="/root/.local/bin:/root/.pyenv/bin:/root/.poetry/bin:$PATH"
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
