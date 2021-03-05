@@ -1,8 +1,19 @@
 FROM ubuntu:latest as base
 ARG PROJECT_DIR
 ARG PYTHON_VERSION
+ARG PYPI_URL
+ARG PYPI_USERNAME
+ARG PYPI_PASSWORD
+ARG CONDA_CHANNEL
+ARG CONDA_TOKEN
 ENV PY_VERSION=$PYTHON_VERSION
 ENV CFLAGS -O2
+
+# Provision an optional private pypi server
+RUN if [[! -z "$PYPI_URL" ]]; then printf "machine $PYPI_URL\n\tlogin $PYPI_USERNAME\n\tpassword $PYPI_PASSWORD " >> ~/.netrc; fi
+
+# Provision an optional private conda channel
+RUN if [[! -z "$CONDA_CHANNEL" ]]; then printf "channels:\n  - https://conda.anaconda.org/$CONDA_CHANNEL/t/$CONDA_TOKEN" >> ~/.condarc; fi
 
 # Get requirements for installing different versions of python via pyenv
 RUN apt update \
