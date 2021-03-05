@@ -42,16 +42,15 @@ fi
 
 
 docker build $BASEDIR \
-    --build-arg CONDA_CHANNEL=$CONDA_CHANNEL \
-    --build-arg CONDA_TOKEN=$CONDA_TOKEN \
+    --build-arg CHANNEL=$CONDA_CHANNEL \
+    --build-arg TOKEN=$CONDA_TOKEN \
     --build-arg PYPI_URL=$PYPI_URL \
     --build-arg PYPI_USERNAME=$PYPI_USERNAME \
     --build-arg PYPI_PASSWORD=$PYPI_PASSWORD \
     --build-arg PROJECT_DIR=$project_dir \
     --build-arg PYTHON_VERSION=$py_version \
     --target base \
-    --tag $docker_image \
-    &> logs/docker.log
+    --tag $docker_image &> logs/docker.log
 status_code=$?
 if [[ $status_code -ne 0 ]]; then
     cat logs/docker.log
@@ -104,16 +103,15 @@ if [[ $status_code -ne 0 ]]; then
 fi
 
 docker build $BASEDIR \
-    --build-arg CONDA_CHANNEL=$CONDA_CHANNEL \
-    --build-arg CONDA_TOKEN=$CONDA_TOKEN \
+    --build-arg CHANNEL=$CONDA_CHANNEL \
+    --build-arg TOKEN=$CONDA_TOKEN \
     --build-arg PYPI_URL=$PYPI_URL \
     --build-arg PYPI_USERNAME=$PYPI_USERNAME \
     --build-arg PYPI_PASSWORD=$PYPI_PASSWORD \
     --build-arg PROJECT_DIR=$project_dir \
     --build-arg PYTHON_VERSION=$py_version \
     --target locks \
-    --tag $docker_image_lock \
-    &> logs/docker-lock.log
+    --tag $docker_image_lock &> logs/docker-lock.log
 status_code=$?
 if [[ $status_code -ne 0 ]]; then
     cat logs/docker-lock.log
