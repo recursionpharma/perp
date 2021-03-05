@@ -2,5 +2,8 @@
 
 cp lockfiles/* ./
 
-sed -i"" -e '/- pip:.*/a \ \ \ \ - --extra-index-url https://pypi.rxrx.io/simple' environment-lock.yml
+if [[ ! -z "$PYPI_URL" ]]
+then
+    sed -i"" -e "/- pip:.*/a \ \ \ \ - --extra-index-url $PYPI_URL" environment-lock.yml
+fi
 ~/miniconda/bin/conda env create -f environment-lock.yml
