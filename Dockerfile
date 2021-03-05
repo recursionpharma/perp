@@ -4,8 +4,8 @@ ARG PYTHON_VERSION
 ARG PYPI_URL
 ARG PYPI_USERNAME
 ARG PYPI_PASSWORD
-ARG CONDA_CHANNEL
-ARG CONDA_TOKEN
+ARG CHANNEL
+ARG TOKEN
 ENV PY_VERSION=$PYTHON_VERSION
 ENV CFLAGS -O2
 
@@ -42,10 +42,10 @@ COPY ./utils/ ./bootstrap/ ./$PROJECT_DIR/ /test/
 RUN /test/cleanup.sh
 
 # Provision an optional private pypi server
-RUN if [[ ! -z "$PYPI_URL" ]]; then printf "machine $PYPI_URL\n\tlogin $PYPI_USERNAME\n\tpassword $PYPI_PASSWORD " >> ~/.netrc; fi
+RUN if [[ ! -z "$PYPI_URL" ]]; then printf "machine $PYPI_URL\n\tlogin $PYPI_USERNAME\n\tpassword $PYPI_PASSWORD\n" >> ~/.netrc && chmod 0600 ~/.netrc ; fi
 
 # Provision an optional private conda channel
-RUN if [[ ! -z "$CONDA_CHANNEL" ]]; then printf "channels:\n  - https://conda.anaconda.org/$CONDA_CHANNEL/t/$CONDA_TOKEN" >> ~/.condarc; fi
+RUN if [[ ! -z "$CONDA_CHANNEL" ]]; then printf "channels:\n  - https://conda.anaconda.org/$CHANNEL/t/$TOKEN\n" >> ~/.condarc; fi
 
 WORKDIR /test
 
