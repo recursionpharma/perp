@@ -1,0 +1,4 @@
+--extra-index-url https://***REMOVED***
+google-cloud-storage
+pandas
+seaborn
