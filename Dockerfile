@@ -7,6 +7,7 @@ ARG PYPI_PASSWORD
 ARG CHANNEL
 ARG TOKEN
 ENV PY_VERSION=$PYTHON_VERSION
+ENV PYPI_URL=$PYPI_URL
 ENV CFLAGS -O2
 
 # Get requirements for installing different versions of python via pyenv
