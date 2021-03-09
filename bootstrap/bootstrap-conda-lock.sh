@@ -1,5 +1,7 @@
 #! /bin/bash
 
+./creds.sh
+
 cp lockfiles/* ./
 
 if [[ ! -z "$PYPI_URL" ]]

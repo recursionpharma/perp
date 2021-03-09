@@ -42,11 +42,7 @@ fi
 
 
 docker build $BASEDIR \
-    --build-arg CHANNEL=$CONDA_CHANNEL \
-    --build-arg TOKEN=$CONDA_TOKEN \
     --build-arg PYPI_URL=$PYPI_URL \
-    --build-arg PYPI_USERNAME=$PYPI_USERNAME \
-    --build-arg PYPI_PASSWORD=$PYPI_PASSWORD \
     --build-arg PROJECT_DIR=$project_dir \
     --build-arg PYTHON_VERSION=$py_version \
     --target base \
@@ -58,7 +54,10 @@ if [[ $status_code -ne 0 ]]; then
 fi
 
 # Create the lockfiles for the requisite projects and log the output for debugging
-docker run --rm -e PY_VERSION=$py_version $docker_image \
+docker run --rm \
+    -e PYPI_USERNAME=$PYPI_USERNAME -e PYPI_PASSWORD=$PYPI_PASSWORD \
+    -e CHANNEL=$CONDA_CHANNEL -e TOKEN=$CONDA_TOKEN \
+    $docker_image \
     -c "/test/bootstrap-conda.sh 1>&2 && ~/miniconda/bin/conda env export -n test " \
     > $project_lock_dir/environment-lock.yml \
     2> $project_logs_dir/create-lock-conda.log
@@ -69,7 +68,10 @@ if [[ $status_code -ne 0 ]]; then
     exit $status_code
 fi
 
-docker run --rm -e PY_VERSION=$py_version $docker_image \
+docker run --rm \
+    -e PYPI_USERNAME=$PYPI_USERNAME -e PYPI_PASSWORD=$PYPI_PASSWORD \
+    -e CHANNEL=$CONDA_CHANNEL -e TOKEN=$CONDA_TOKEN \
+    $docker_image \
     -c "/test/bootstrap-pipenv.sh 1>&2 && cat Pipfile.lock" \
     > $project_lock_dir/Pipfile.lock \
     2> $project_logs_dir/create-lock-pipenv.log
@@ -80,7 +82,10 @@ if [[ $status_code -ne 0 ]]; then
     exit $status_code
 fi
 
-docker run --rm -e PY_VERSION=$py_version $docker_image \
+docker run --rm \
+    -e PYPI_USERNAME=$PYPI_USERNAME -e PYPI_PASSWORD=$PYPI_PASSWORD \
+    -e CHANNEL=$CONDA_CHANNEL -e TOKEN=$CONDA_TOKEN \
+    $docker_image \
     -c "/test/bootstrap-poetry.sh 1>&2 && cat poetry.lock" \
     > $project_lock_dir/poetry.lock \
     2> $project_logs_dir/create-lock-poetry.log
@@ -91,7 +96,10 @@ if [[ $status_code -ne 0 ]]; then
     exit $status_code
 fi
 
-docker run --rm -e PY_VERSION=$py_version $docker_image \
+docker run --rm \
+    -e PYPI_USERNAME=$PYPI_USERNAME -e PYPI_PASSWORD=$PYPI_PASSWORD \
+    -e CHANNEL=$CONDA_CHANNEL -e TOKEN=$CONDA_TOKEN \
+    $docker_image \
     -c "/test/bootstrap-pip-compile.sh 1>&2 && cat requirements.txt" \
     > $project_lock_dir/requirements.txt \
     2> $project_logs_dir/create-lock-pip.log
@@ -103,13 +111,7 @@ if [[ $status_code -ne 0 ]]; then
 fi
 
 docker build $BASEDIR \
-    --build-arg CHANNEL=$CONDA_CHANNEL \
-    --build-arg TOKEN=$CONDA_TOKEN \
-    --build-arg PYPI_URL=$PYPI_URL \
-    --build-arg PYPI_USERNAME=$PYPI_USERNAME \
-    --build-arg PYPI_PASSWORD=$PYPI_PASSWORD \
     --build-arg PROJECT_DIR=$project_dir \
-    --build-arg PYTHON_VERSION=$py_version \
     --target locks \
     --tag $docker_image_lock &> logs/docker-lock.log
 status_code=$?
@@ -127,7 +129,10 @@ do
     if [[ $status_code -eq 0 ]]; then
         for i in `seq 1 10`;
         do
-            docker run --rm $docker_image_lock -c "/usr/bin/time --format "%e" --output=/test/time.out \
+            docker run --rm \
+                -e PYPI_USERNAME=$PYPI_USERNAME -e PYPI_PASSWORD=$PYPI_PASSWORD \
+                -e CHANNEL=$CONDA_CHANNEL -e TOKEN=$CONDA_TOKEN \
+                $docker_image_lock -c "/usr/bin/time --format "%e" --output=/test/time.out \
                                         /test/bootstrap-${snek}.sh &> /dev/null && \
                                         echo -n "${snek}," && cat /test/time.out" >> $project_logs_dir/results.txt
         done
