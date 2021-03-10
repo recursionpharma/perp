@@ -111,7 +111,9 @@ if [[ $status_code -ne 0 ]]; then
 fi
 
 docker build $BASEDIR \
+    --build-arg PYPI_URL=$PYPI_URL \
     --build-arg PROJECT_DIR=$project_dir \
+    --build-arg PYTHON_VERSION=$py_version \
     --target locks \
     --tag $docker_image_lock &> logs/docker-lock.log
 status_code=$?
