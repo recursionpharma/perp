@@ -125,7 +125,12 @@ fi
 for snek in conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
 do
     echo $snek
-    docker run --rm $docker_image_lock -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
+    # Run once for logs
+    docker run --rm \
+        -e PYPI_USERNAME=$PYPI_USERNAME -e PYPI_PASSWORD=$PYPI_PASSWORD \
+        -e CHANNEL=$CONDA_CHANNEL -e TOKEN=$CONDA_TOKEN \
+        $docker_image_lock -c "/test/bootstrap-${snek}.sh" &> $project_logs_dir/${snek}.log
+
     status_code=$?
     echo "return code: $status_code" >> $project_logs_dir/${snek}.log
     if [[ $status_code -eq 0 ]]; then
