@@ -4,8 +4,6 @@
 #
 #    pip-compile --output-file=requirements/requirements.txt requirements/requirements.in
 #
---index-url https://fiwIjY6o:GO655N3OdHrjXizDtArUgx8qblioqFZ1BH5mGQ88Aw3l@nexus.rxrx.io/repository/pypi-all/simple
---extra-index-url https://nexus.rxrx.io/repository/pypi-hosted/simple
 
 cachetools==4.2.1
     # via google-auth
