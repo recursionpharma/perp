@@ -1,4 +1,3 @@
---extra-index-url https://nexus.rxrx.io/repository/pypi-hosted/simple
 google-cloud-storage
 pandas
 seaborn
