@@ -1,5 +1,7 @@
 #! /bin/bash
 
+./creds.sh
+
 /root/.pyenv/versions/$PY_VERSION/bin/python -m venv ./venv
 source ./venv/bin/activate
 pip install pip --upgrade

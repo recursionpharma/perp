@@ -1,7 +1,9 @@
 FROM ubuntu:latest as base
 ARG PROJECT_DIR
 ARG PYTHON_VERSION
+ARG PYPI_URL
 ENV PY_VERSION=$PYTHON_VERSION
+ENV PYPI_URL=$PYPI_URL
 ENV CFLAGS -O2
 
 # Get requirements for installing different versions of python via pyenv
@@ -42,7 +44,5 @@ ENTRYPOINT ["/bin/bash"]
 
 FROM base as locks
 ARG PROJECT_DIR
-ARG PYTHON_VERSION
-ENV PY_VERSION=$PYTHON_VERSION
 
 COPY ./$PROJECT_DIR/lockfiles /test/lockfiles
