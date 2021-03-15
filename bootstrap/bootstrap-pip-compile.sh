@@ -1,5 +1,7 @@
 #! /bin/bash
 
+./creds.sh
+
 export PATH="/root/.local/bin:/root/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"

@@ -1,5 +1,7 @@
 #! /bin/bash
 
+./creds.sh
+
 cp lockfiles/* ./
 
 export LC_ALL=C.UTF-8

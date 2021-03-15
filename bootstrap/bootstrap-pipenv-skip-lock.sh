@@ -1,5 +1,7 @@
 #! /bin/bash
 
+./creds.sh
+
 sed -i"" -e "s/python_version =.*/python_version = \"$PY_VERSION\"/" Pipfile
 
 export LC_ALL='en_US.UTF-8'
