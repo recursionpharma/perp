@@ -1,7 +1,12 @@
 import argparse
+import urllib.parse as url
+from io import BytesIO
+
+import google.cloud.storage as gs
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+
 
 # conda+mamba - shades of green (Derived from anaconda website)
 # poetry - shades of blue  (Derived from their logo)
@@ -37,8 +42,7 @@ colors = {
     'poetry-lock': '#398cd7'
 }
 
-def plot(project, results_file, image_file):
-    df = pd.read_csv(results_file)
+def plot(project, df, image_file):
     sorted_indices = df.groupby('env').median().sort_values('time').index
     sorted_colors = [colors[i] for i in sorted_indices]
     sns_plot = sns.barplot(x='env', y='time', data=df, order=sorted_indices, palette=sorted_colors)
@@ -51,9 +55,22 @@ def plot(project, results_file, image_file):
     sns_plot.figure.savefig(image_file)
 
 
+def process_results_file(results_file_uri):
+    parse_results = url.urlparse(results_file_uri)
+    if 'gs' == parse_results.scheme:
+        client = gs.Client()
+        bucket = client.get_bucket(parse_results.netloc)
+        blob_name = parse_results.path.lstrip('/')
+        return pd.read_csv(
+            BytesIO(bucket.get_blob(blob_name).download_as_string()))
+    else:
+        return pd.read_csv(results_file_uri)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Plot Python environment manager profiling results from input text file. '
+                    'File can be local or object in Google storage bucket with URI starting with "gs://". '
                     'File must be formatted as CSV file with header \"env,time\". '
                     'Plot will be saved to an output image file.')
     parser.add_argument('-p',
@@ -75,7 +92,8 @@ def main():
                         required=True,
                         help='Path to the output image file.')
     args = parser.parse_args()
-    plot(args.project, args.results_file, args.image_file)
+    results_df = process_results_file(args.results_file)
+    plot(args.project, results_df, args.image_file)
 
 
 if '__main__' == __name__:

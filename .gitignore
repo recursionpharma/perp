@@ -130,6 +130,7 @@ dmypy.json
 
 # VS code files
 *.code-workspace
+*.vscode
 
 # MacOS files
 .DS_Store
