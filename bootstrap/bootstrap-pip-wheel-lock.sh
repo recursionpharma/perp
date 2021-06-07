@@ -11,5 +11,6 @@ eval "$(pyenv virtualenv-init -)"
 pyenv virtualenv $PY_VERSION test
 pyenv deactivate
 pyenv activate test
+echo "$0: $(python --version)"
 pip install --upgrade pip wheel
 pip install --no-cache-dir -r requirements.txt

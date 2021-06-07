@@ -13,5 +13,6 @@ export LANG=C.UTF-8
 pyenv virtualenv $PY_VERSION test
 pyenv deactivate
 pyenv activate test
+echo "$0: $(python --version)"
 pip install pip-tools
 pip-compile --generate-hashes requirements.in
