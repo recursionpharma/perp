@@ -4,7 +4,6 @@
 #
 #    pip-compile --output-file=requirements/requirements.txt requirements/requirements.in
 #
-
 cachetools==4.2.1
     # via google-auth
 certifi==2020.12.5
@@ -50,7 +49,7 @@ pandas==1.2.3
     # via
     #   -r requirements/requirements.in
     #   seaborn
-pillow==8.1.1
+pillow==8.3.2
     # via matplotlib
 protobuf==3.15.4
     # via
@@ -95,7 +94,7 @@ six==1.15.0
     #   google-resumable-media
     #   protobuf
     #   python-dateutil
-urllib3==1.26.3
+urllib3==1.26.5
     # via requests
 
 # The following packages are considered to be unsafe in a requirements file:
