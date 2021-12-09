@@ -11,6 +11,7 @@ eval "$(pyenv virtualenv-init -)"
 pyenv virtualenv $PY_VERSION test
 pyenv deactivate
 pyenv activate test
-echo "$0: $(python --version)"
-pip install --upgrade pip wheel
-pip install --no-cache-dir -r requirements.txt
+export PYTHON_ENV_PATH=/root/.pyenv/versions/$PY_VERSION/envs/test/bin/
+echo "$0: $($PYTHON_ENV_PATH/python --version)"
+$PYTHON_ENV_PATH/pip install --upgrade pip wheel
+$PYTHON_ENV_PATH/pip install --no-cache-dir -r requirements.txt
