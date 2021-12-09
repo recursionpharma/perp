@@ -12,4 +12,4 @@ pyenv activate test
 export PYTHON_ENV_PATH=/root/.pyenv/versions/$PY_VERSION/envs/test/bin/
 echo "$0: $($PYTHON_ENV_PATH/python --version)"
 $PYTHON_ENV_PATH/pip install pip --upgrade
-$PYTHON_ENV_PATH/pipc install --no-cache-dir --use-feature=2020-resolver -r requirements.in
+$PYTHON_ENV_PATH/pip install --no-cache-dir --use-feature=2020-resolver -r requirements.in
