@@ -29,12 +29,11 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 RUN pip3 install --user pipenv
 
 # Install conda
-RUN curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o ~/miniconda.sh && bash ~/miniconda.sh -b -p $HOME/miniconda
-ENV PATH /root/miniconda/bin:$PATH
-RUN ~/miniconda/bin/conda config --show-sources && ~/miniconda/bin/conda config --set auto_update_conda False && ~/miniconda/bin/conda config --show
+RUN curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o ~/miniconda.sh && bash ~/miniconda.sh -b -p /root/miniconda
+RUN /root/miniconda/bin/conda config --show-sources && /root/miniconda/bin/conda config --set auto_update_conda False && /root/miniconda/bin/conda config --show
 
 # Install mamba
-RUN ~/miniconda/bin/conda install mamba -c conda-forge
+RUN /root/miniconda/bin/conda install mamba -c conda-forge
 
 COPY ./utils/ ./bootstrap/ ./$PROJECT_DIR/ /test/
 RUN /test/cleanup.sh

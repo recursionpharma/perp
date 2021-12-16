@@ -14,5 +14,5 @@ sed -i"" -e "s/^python = .*/python = \"$PY_VERSION\"/" pyproject.toml
 # pyenv shell $PY_VERSION
 pyenv global $PY_VERSION
 echo "$0: $(python --version)"
-poetry run pip install --upgrade pip
+poetry run pip install --upgrade pip wheel
 poetry install --no-root

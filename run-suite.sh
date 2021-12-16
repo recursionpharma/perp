@@ -122,7 +122,7 @@ if [[ $status_code -ne 0 ]]; then
     exit $status_code
 fi
 
-for snek in conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-lock pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
+for snek in conda conda-lock conda+pip mamba mamba-lock mamba+pip pip-compile pip-wheel-lock pip+pyenv pip+venv pipenv pipenv-lock pipenv-skip-lock poetry poetry-lock
 do
     echo $snek
     # Run once for logs
