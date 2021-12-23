@@ -42,7 +42,7 @@ colors = {
 }
 
 
-def plot(project, df, image_file, python_version):
+def plot(project, df, image_file, python_version, show_image=False):
     sorted_indices = df.groupby('env').median().sort_values('time').index
     sorted_colors = [colors[i] for i in sorted_indices]
     sns_plot = sns.barplot(x='env',
@@ -54,9 +54,14 @@ def plot(project, df, image_file, python_version):
     ax.set_ylabel('Time (s)')
     ax.set_xlabel('Environment Resolver')
     _ = plt.xticks(rotation=15)
-    ax.set_title(f'{project.capitalize()} Environment Resolution Time (Python {python_version})')
-    plt.show()
-    sns_plot.figure.savefig(image_file)
+    ax.set_title(
+        f'{project.capitalize()} Environment Resolution Time (Python {python_version})'
+    )
+    if show_image:
+        plt.show()
+    fig = sns_plot.figure
+    fig.set_size_inches(1800 / fig.dpi, 900 / fig.dpi)
+    fig.savefig(image_file)
 
 
 def process_results_file(results_file_uri):
@@ -96,14 +101,22 @@ def main():
                         default=False,
                         required=True,
                         help='Path to the output image file.')
-    parser.add_argument('-v',
-                        '--python-version',
-                        default=False,
-                        required=True,
-                        help='Python version used for profiling. Example: --python-version=3.7')
+    parser.add_argument('-s',
+                        '--show',
+                        action='store_true',
+                        help='Show image onscreen before saving.')
+    parser.add_argument(
+        '-v',
+        '--python-version',
+        default=False,
+        required=True,
+        help='Python version used for profiling. Example: --python-version=3.7'
+    )
+    parser.set_defaults(show=False)
     args = parser.parse_args()
     results_df = process_results_file(args.results_file)
-    plot(args.project, results_df, args.image_file, args.python_version)
+    plot(args.project, results_df, args.image_file, args.python_version,
+         args.show)
 
 
 if '__main__' == __name__:
