@@ -6,6 +6,7 @@ import google.cloud.storage as gs
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 
 # conda+mamba - shades of green (Derived from anaconda website)
 # poetry - shades of blue  (Derived from their logo)
@@ -49,7 +50,8 @@ def plot(project, df, image_file, python_version, show_image=False):
                            y='time',
                            data=df,
                            order=sorted_indices,
-                           palette=sorted_colors)
+                           palette=sorted_colors,
+                           estimator=np.median)
     ax = plt.gca()
     ax.set_ylabel('Time (s)')
     ax.set_xlabel('Environment Resolver')
